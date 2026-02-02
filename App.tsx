@@ -9,16 +9,29 @@ import { NewAppScreen } from '@react-native/new-app-screen';
 import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
 import {
   SafeAreaProvider,
+  SafeAreaView,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
+import { HomeScreen } from './src/screens/HomeScreen';
+import { Provider } from 'react-redux';
+import { persistor, store } from './src/store/MyStore';
+import { PersistGate } from 'redux-persist/integration/react';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
     <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <SafeAreaView style={{ flex: 1 }}>
+            <StatusBar
+              barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+            />
+            <HomeScreen />
+          </SafeAreaView>
+        </PersistGate>
+      </Provider>
     </SafeAreaProvider>
   );
 }
